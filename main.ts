@@ -15,6 +15,9 @@ export class MyChart extends Chart {
       namespace: "<<NAMESPACE>>"
     }
     const cfgMap = new KubeConfigMap(this, 'prometheus-configmap', {
+      metadata: {
+        namespace: prometheusCfg.namespace
+      },
       data: {
         "prometheus.yaml" : readFileSync("./prometheus.yaml")
             .toString()
