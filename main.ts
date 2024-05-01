@@ -27,6 +27,9 @@ export class MyChart extends Chart {
       spec: {
         selector: { matchLabels: prometheusCfg.label },
         template: {
+          metadata: {
+            labels: prometheusCfg.label
+          },
           spec: {
             serviceAccount: "<<SERVICE_ACCOUNT>>",
             containers: [
@@ -73,7 +76,7 @@ export class MyChart extends Chart {
           {
             name: "prometheus",
             port: 9090,
-            protocol: "tcp"
+            protocol: "TCP"
           }
         ]
       }
