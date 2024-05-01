@@ -1,6 +1,6 @@
 import { Construct } from 'constructs';
 import { App, Chart, ChartProps } from 'cdk8s';
-import {KubeConfigMap, KubeDeployment, KubeIngress, KubeService} from "./imports/k8s";
+import {IntOrString, KubeConfigMap, KubeDeployment, KubeIngress, KubeService} from "./imports/k8s";
 import { readFileSync } from 'fs';
 import {ServiceType} from "cdk8s-plus-25";
 
@@ -78,6 +78,7 @@ export class MyChart extends Chart {
           {
             name: "prometheus",
             port: 9090,
+            targetPort: IntOrString.fromNumber(9090),
             protocol: "TCP"
           }
         ]
