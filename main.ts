@@ -35,7 +35,7 @@ export class MyChart extends Chart {
             labels: prometheusCfg.label
           },
           spec: {
-            serviceAccount: "<<SERVICE_ACCOUNT>>",
+            serviceAccountName: "<<SERVICE_ACCOUNT>>",
             containers: [
               {
                 name: "prometheus",
