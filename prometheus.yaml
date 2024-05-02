@@ -8,7 +8,7 @@ scrape_configs:
       - role: endpoints
 
     relabel_configs:
-      - source_labels: [__meta_kubernetes_service_annotation_lara9_prometheus_scrape]
+      - source_labels: [__meta_kubernetes_service_annotation_lara9_prometheus_io_scrape]
         action: keep
         regex: true
       - source_labels: [__meta_kubernetes_service_annotation_lara9_prometheus_scheme]
@@ -19,7 +19,7 @@ scrape_configs:
         action: replace
         target_label: __metrics_path__
         regex: (.+)
-      - source_labels: [__address__, __meta_kubernetes_service_annotation_lara9_prometheus_port]
+      - source_labels: [__address__, __meta_kubernetes_service_annotation_lara9_prometheus_io_port]
         action: replace
         target_label: __address__
         regex: ([^:]+)(?::\d+)?;(\d+)
