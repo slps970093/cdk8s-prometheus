@@ -1,70 +1,30 @@
+global:
+  scrape_interval: 60s
+
 scrape_configs:
-  - job_name: 'kubernetes-service-endpoints'
 
-    scrape_interval: 1s
-    scrape_timeout: 1s
+  - job_name: 'cadvisor'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ["cadvisor.cadvisor.svc.cluster.local:8080"]
 
+  - job_name: 'prod_cometcast_phpfpm'
     kubernetes_sd_configs:
-      - role: endpoints
-
+        - role: endpoints
     relabel_configs:
-      - source_labels: [__meta_kubernetes_service_annotation_lara9_prometheus_io_scrape]
+      - source_labels: [ __meta_kubernetes_service_annotation_prod_cometcast_phpfpm_prometheus_io_scrape ]
         action: keep
         regex: true
-      - source_labels: [__meta_kubernetes_service_annotation_lara9_prometheus_scheme]
+      - source_labels: [ __meta_kubernetes_service_annotation_prod_cometcast_phpfpm_prometheus_scheme ]
         action: replace
         target_label: __scheme__
         regex: (https?)
-      - source_labels: [__meta_kubernetes_service_annotation_lara9_prometheus_path]
+      - source_labels: [ __meta_kubernetes_service_annotation_prod_cometcast_phpfpm_prometheus_path ]
         action: replace
         target_label: __metrics_path__
         regex: (.+)
-      - source_labels: [__address__, __meta_kubernetes_service_annotation_lara9_prometheus_io_port]
+      - source_labels: [ __address__, __meta_kubernetes_service_annotation_prod_cometcast_phpfpm_prometheus_port ]
         action: replace
         target_label: __address__
         regex: ([^:]+)(?::\d+)?;(\d+)
         replacement: $1:$2
-      - source_labels: [__meta_kubernetes_namespace]
-        action: replace
-        target_label: kubernetes_namespace
-      - source_labels: [__meta_kubernetes_service_name]
-        action: replace
-        target_label: kubernetes_service
-      - source_labels: [__meta_kubernetes_pod_name]
-        action: replace
-        target_label: kubernetes_pod
-
-  - job_name: 'kubernetes-nginx-service-endpoints'
-
-    scrape_interval: 1s
-    scrape_timeout: 1s
-
-    kubernetes_sd_configs:
-      - role: endpoints
-
-    relabel_configs:
-      - source_labels: [ __meta_kubernetes_service_annotation_lara9_nginx_prometheus_io_scrape ]
-        action: keep
-        regex: true
-      - source_labels: [ __meta_kubernetes_service_annotation_lara9_nginx_prometheus_scheme ]
-        action: replace
-        target_label: __scheme__
-        regex: (https?)
-      - source_labels: [ __meta_kubernetes_service_annotation_lara9_nginx_prometheus_path ]
-        action: replace
-        target_label: __metrics_path__
-        regex: (.+)
-      - source_labels: [ __address__, __meta_kubernetes_service_annotation_lara9_nginx_prometheus_io_port ]
-        action: replace
-        target_label: __address__
-        regex: ([^:]+)(?::\d+)?;(\d+)
-        replacement: $1:$2
-      - source_labels: [ __meta_kubernetes_namespace ]
-        action: replace
-        target_label: kubernetes_namespace
-      - source_labels: [ __meta_kubernetes_service_name ]
-        action: replace
-        target_label: kubernetes_service
-      - source_labels: [ __meta_kubernetes_pod_name ]
-        action: replace
-        target_label: kubernetes_pod
